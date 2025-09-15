@@ -1,5 +1,6 @@
 import { UserModel } from "../models/user.model.js";
 
+//obtener todos los usuarios
 export const getUsers = async (req, res) => {
     try {
         const users = await UserModel.find({ active: true });
@@ -15,6 +16,7 @@ export const getUsers = async (req, res) => {
     }
 };
 
+//obtener usuario por id
 export const getUserById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -39,6 +41,7 @@ export const getUserById = async (req, res) => {
     }
 };
 
+//crear usuario
 export const createUser = async (req, res) => {
     try {
         const { username, email, password, userType, address } = req.body;

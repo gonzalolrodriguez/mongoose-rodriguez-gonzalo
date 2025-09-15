@@ -69,6 +69,7 @@ export const createOrder = async (req, res) => {
     }
 };
 
+// Obtener todos los pedidos del usuario autenticado
 export const getAllOrders = async (req, res) => {
     try {
         const userId = req.userId;

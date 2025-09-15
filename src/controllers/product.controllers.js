@@ -1,7 +1,7 @@
 import { ProductModel } from "../models/product.model.js";
 import { UserModel } from "../models/user.model.js";
 
-
+// Crea un producto, sólo los vendedores.
 export const createProduct = async (req, res) => {
     try {
         const { name, description, price, category, stock } = req.body;
@@ -15,6 +15,7 @@ export const createProduct = async (req, res) => {
             });
         }
 
+        // Validacion
         const newProduct = new ProductModel({
             name,
             description,
@@ -39,6 +40,7 @@ export const createProduct = async (req, res) => {
     }
 };
 
+//obtener todos los productos activos
 
 export const getAllProducts = async (req, res) => {
     try {
@@ -56,6 +58,7 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
+//obtener producto por id
 
 export const getProductById = async (req, res) => {
     try {
