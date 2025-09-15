@@ -46,3 +46,11 @@ const ProductSchema = new Schema(
 );
 
 export const ProductModel = model("Product", ProductSchema);
+// Eliminación lógica en cascada de órdenes que contienen el producto
+ProductSchema.pre('findOneAndUpdate', async function (next) {
+    if (this._update && this._update.active === false) {
+        const productId = this.getQuery()._id;
+        await require('./order.model').OrderModel.updateMany({ 'products.product': productId }, { active: false });
+    }
+    next();
+});

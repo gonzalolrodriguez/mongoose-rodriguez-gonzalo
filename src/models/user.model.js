@@ -49,4 +49,16 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
+// Eliminación lógica y en cascada de productos y órdenes
+UserSchema.pre('findOneAndUpdate', async function (next) {
+    if (this._update && this._update.active === false) {
+        const userId = this.getQuery()._id;
+        // Desactivar productos del vendedor
+        await require('./product.model').ProductModel.updateMany({ seller: userId }, { active: false });
+        // Desactivar órdenes del usuario
+        await require('./order.model').OrderModel.updateMany({ user: userId }, { active: false });
+    }
+    next();
+});
+
 export const UserModel = model("User", UserSchema);
