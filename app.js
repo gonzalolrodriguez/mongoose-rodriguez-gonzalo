@@ -1,8 +1,10 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
-import { connectDB } from './config/database.js';
-import { userRoutes } from './routes/user.routes.js';
-import { productRoutes } from './routes/product.routes.js';
-import { orderRoutes } from './routes/order.routes.js';
+import { connectDB } from './src/config/database.js';
+import { userRoutes } from './src/routes/user.routes.js';
+import { productRoutes } from './src/routes/product.routes.js';
+import { orderRoutes } from './src/routes/order.routes.js';
 
 const app = express();
 

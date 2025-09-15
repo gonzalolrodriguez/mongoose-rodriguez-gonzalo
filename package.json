@@ -2,7 +2,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
+    "express": "^5.1.0",
     "i": "^0.3.7",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
     "morgan": "^1.10.1",
     "nodemon": "^3.1.10"
@@ -11,7 +13,6 @@
   "version": "1.0.0",
   "main": "app.js",
   "type": "module",
-  "devDependencies": {},
   "scripts": {
     "dev": "nodemon app.js",
     "star": "node app.js"
