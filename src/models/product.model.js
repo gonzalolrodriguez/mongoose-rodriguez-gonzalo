@@ -1,5 +1,6 @@
 import { model, Schema, Types } from "mongoose";
 
+//schema para productos
 const ProductSchema = new Schema(
     {
         name: {

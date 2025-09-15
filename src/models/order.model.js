@@ -1,5 +1,6 @@
 import { model, Schema, Types } from "mongoose";
 
+//schema para ordenes de compra
 const OrderSchema = new Schema(
     {
         user: {
