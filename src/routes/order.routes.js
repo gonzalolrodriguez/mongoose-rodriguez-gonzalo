@@ -7,5 +7,6 @@ import { authenticate } from "../middlewares/auth.js";
 
 export const orderRoutes = Router();
 
+//rutas de orden
 orderRoutes.post("/orders", authenticate, createOrder);
 orderRoutes.get("/orders", authenticate, getAllOrders);

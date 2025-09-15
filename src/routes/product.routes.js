@@ -8,6 +8,7 @@ import { authenticate, requireSeller } from "../middlewares/auth.js";
 
 export const productRoutes = Router();
 
+//rutas de producto
 productRoutes.post("/products", authenticate, requireSeller, createProduct);
 productRoutes.get("/products", getAllProducts);
 productRoutes.get("/products/:id", getProductById);
