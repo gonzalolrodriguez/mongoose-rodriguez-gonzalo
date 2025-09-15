@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 
+//middleware para verificar si el usuario es vendedor
 export const requireSeller = (req, res, next) => {
     if (!req.user || req.user.userType !== 'seller') {
         return res.status(403).json({ ok: false, msg: 'Acceso solo para vendedores' });
@@ -7,6 +8,7 @@ export const requireSeller = (req, res, next) => {
     next();
 };
 
+//middleware para autenticar el token JWT
 export const authenticate = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
