@@ -95,7 +95,7 @@ export const deleteUser = async (req, res) => {
         user.active = false;
         user.deleted = true;
         await user.save();
-        res.status(200).json({ ok: true, msg: "Usuario eliminado lógicamente" });
+        res.status(200).json({ ok: true, msg: "Usuario eliminado" });
     } catch (error) {
         res.status(500).json({ ok: false, msg: "Error al eliminar el usuario" });
     }

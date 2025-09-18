@@ -8,42 +8,61 @@
   - En el modelo `Order`, la dirección de envío (`shippingAddress`) también se embebe por la misma razón.
   - En el array `products` de `Order`, se embeben cantidad y precio para mantener el historial de la orden.
 
-- **Relación 1:1:**
-
+- **Propiedad referenciada:**
   - Cada `Order` tiene un único `User` (referenciado por `user`).
-
-- **Relación 1:N:**
-
   - Un `User` vendedor puede tener muchos `Product` (referenciado por `seller`).
-
-- **Relación N:M:**
-  - Un `Order` puede tener muchos `Product` y un `Product` puede estar en muchas órdenes (referenciado en el array `products` de `Order`).
+  - Un `Order` puede tener muchos `Product` y un `Product` puede estar en muchas órdenes (referenciado en el array `products` de `Order` y en el array `orders` de `Product`).
 
 ---
 
 ## Justificación de conceptos en el proyecto
 
-### ● Uso de `populate` desde colecciones sin referencias
+### ● Uso de `populate` en el proyecto
 
-En este proyecto, si una colección (por ejemplo, `Profile`) no tiene referencias directas (`ObjectId`) a otra colección (`User`), no se puede usar el método `populate` de Mongoose. En su lugar, se realiza una consulta manual: primero se obtiene el documento principal y luego, usando un campo identificador (como `userId`), se consulta la colección relacionada.
+En este proyecto, se utiliza el método `populate` de Mongoose en los controladores para obtener información relacionada de los modelos referenciados. Por ejemplo, al listar productos se pobla el campo `seller` con los datos del usuario, y al listar órdenes se poblan los campos `user` y `products.product` con información relevante.
 
 **Ejemplo en el proyecto:**
 
 ```js
-// src/controllers/profile.controllers.js
-const profile = await Profile.findOne({ userId: someId });
-const user = await User.findById(profile.userId);
-```
+// src/controllers/product.controllers.js
+const products = await ProductModel.find({ active: true }).populate(
+  "seller",
+  "username email"
+);
 
-Esto simula el comportamiento de `populate` cuando no existen referencias directas en el esquema.
+// src/controllers/order.controllers.js
+const orders = await OrderModel.find({ active: true })
+  .populate("user", "username email")
+  .populate("products.product", "name price");
+```
 
 ---
 
 ### ● Eliminaciones lógicas y en cascada
 
-- **Eliminación lógica:** En vez de borrar documentos, se actualiza un campo (por ejemplo, `isDeleted: true`) en el modelo correspondiente (`User`, `Order`, etc.), permitiendo mantener los datos y su historial.
+- **Eliminación lógica:** En vez de borrar documentos, se actualiza un campo (`active: false`) en el modelo correspondiente (`User`, `Order`, `Product`), permitiendo mantener los datos y su historial.
 
-- **Eliminación en cascada:** Cuando se elimina lógicamente un documento principal (por ejemplo, un usuario), también se marcan como eliminados los documentos relacionados (por ejemplo, sus órdenes).
+- **Eliminación en cascada:** Cuando se desactiva un usuario, también se desactivan sus productos y órdenes relacionados mediante un pre-hook en el modelo de usuario.
+
+**Ejemplo en el proyecto:**
+
+```js
+// src/models/user.model.js
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  const userId = this.getQuery()._id;
+  await require("./product.model").ProductModel.updateMany(
+    { seller: userId },
+    { active: false }
+  );
+  await require("./order.model").OrderModel.updateMany(
+    { user: userId },
+    { active: false }
+  );
+  next();
+});
+```
+
+---
 
 ### ● Endpoint para agregar un nuevo vínculo en una relación muchos a muchos
 
