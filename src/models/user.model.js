@@ -2,45 +2,45 @@ import { model, Schema, Types } from "mongoose";
 import bcrypt from 'bcrypt';
 
 //schema para usuarios
-const UserSchema = new Schema(
-    {
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-            minlength: 3,
-            maxlength: 20
-        },
-        email: {
-            type: String,
-            required: true,
-            unique: true
-        },
-        password: {
-            type: String,
-            required: true,
-            minlength: 6
-        },
-        userType: {
-            type: String,
-            enum: ['customer', 'seller', 'admin'],
-            default: 'customer'
-        },
-        address: {
-            street: String,
-            city: String,
-            country: String
-        },
-        active: {
-            type: Boolean,
-            default: true
-        }
+const UserSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        minlength: 3,
+        maxlength: 20
     },
-    {
-        versionKey: false,
-        timestamps: true
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6
+    },
+    address: {
+        street: { type: String },
+        city: { type: String },
+        country: { type: String }
+    },
+    favorites: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Product'
+    }],
+    active: {
+        type: Boolean,
+        default: true
+    },
+    deleted: {
+        type: Boolean,
+        default: false
     }
-);
+}, {
+    versionKey: false,
+    timestamps: true
+});
 
 // Encriptar password antes de guardar
 UserSchema.pre('save', async function (next) {

@@ -1,6 +1,22 @@
 import { OrderModel } from "../models/order.model.js";
 import { ProductModel } from "../models/product.model.js";
 import { UserModel } from "../models/user.model.js";
+import { body, validationResult } from 'express-validator';
+
+// Middleware de validación para crear orden
+export const validateOrder = [
+    body('products').isArray({ min: 1 }).withMessage('Debe haber al menos un producto'),
+    body('shippingAddress.street').notEmpty().withMessage('La calle de envío es obligatoria'),
+    body('shippingAddress.city').notEmpty().withMessage('La ciudad de envío es obligatoria'),
+    body('shippingAddress.country').notEmpty().withMessage('El país de envío es obligatorio'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ ok: false, errors: errors.array() });
+        }
+        next();
+    }
+];
 
 // Crear un pedido
 export const createOrder = async (req, res) => {
@@ -86,5 +102,21 @@ export const getAllOrders = async (req, res) => {
             ok: false,
             msg: "Error al obtener los pedidos"
         });
+    }
+};
+// Eliminar orden (lógica)
+export const deleteOrder = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const order = await OrderModel.findById(id);
+        if (!order || order.deleted) {
+            return res.status(404).json({ ok: false, msg: "Orden no encontrada" });
+        }
+        order.deleted = true;
+        order.active = false;
+        await order.save();
+        res.status(200).json({ ok: true, msg: "Orden eliminada lógicamente" });
+    } catch (error) {
+        res.status(500).json({ ok: false, msg: "Error al eliminar la orden" });
     }
 };
