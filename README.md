@@ -45,16 +45,6 @@ Esto simula el comportamiento de `populate` cuando no existen referencias direct
 
 - **Eliminación en cascada:** Cuando se elimina lógicamente un documento principal (por ejemplo, un usuario), también se marcan como eliminados los documentos relacionados (por ejemplo, sus órdenes).
 
-**Ejemplo en el proyecto:**
-
-```js
-// src/controllers/user.controllers.js
-await User.findByIdAndUpdate(userId, { isDeleted: true });
-await Order.updateMany({ user: userId }, { isDeleted: true });
-```
-
----
-
 ### ● Endpoint para agregar un nuevo vínculo en una relación muchos a muchos
 
 En relaciones muchos a muchos (por ejemplo, productos y órdenes), se utiliza un array de referencias en los modelos. Para agregar un nuevo vínculo, se crea un endpoint que reciba los IDs y actualice ambos documentos.
