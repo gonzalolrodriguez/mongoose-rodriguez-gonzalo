@@ -1,6 +1,3 @@
-Claro, Gonzalo. Aquí tenés el contenido con formato Markdown, ideal para documentar en tu README o en cualquier archivo técnico:
-
----
 
 # Justificación de Embebido y Referenciado
 
@@ -43,7 +40,7 @@ const orders = await OrderModel.find({ active: true })
 
 ---
 
-### 🗑️ Eliminaciones Lógicas y en Cascada
+### 🗑Eliminaciones Lógicas y en Cascada
 
 #### Eliminación Lógica
 
@@ -71,7 +68,7 @@ UserSchema.pre("findOneAndUpdate", async function (next) {
 
 ---
 
-### 🔗 Endpoint para Agregar un Nuevo Vínculo en Relación Muchos a Muchos
+### Endpoint para Agregar un Nuevo Vínculo en Relación Muchos a Muchos
 
 En relaciones muchos a muchos (por ejemplo, productos y órdenes), se utiliza un array de referencias en los modelos. Para agregar un nuevo vínculo, se crea un endpoint que reciba los IDs y actualice ambos documentos.
 
