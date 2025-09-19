@@ -43,7 +43,11 @@ const orders = await OrderModel.find({ active: true })
 
 #### Eliminación Lógica
 
+#### Eliminación Lógica
+
 En lugar de borrar documentos, se actualiza el campo `active: false` en los modelos `User`, `Order` y `Product`, permitiendo conservar los datos y su historial.
+
+#### Eliminación en Cascada
 
 #### Eliminación en Cascada
 
