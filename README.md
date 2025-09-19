@@ -1,6 +1,4 @@
-Claro, Gonzalo. Aquí tenés el contenido con formato Markdown, ideal para documentar en tu README o en cualquier archivo técnico:
 
----
 
 # Justificación de Embebido y Referenciado
 
@@ -43,13 +41,13 @@ const orders = await OrderModel.find({ active: true })
 
 ---
 
-### 🗑️ Eliminaciones Lógicas y en Cascada
+### 🗑Eliminaciones Lógicas y en Cascada
 
-#### 🔸 Eliminación Lógica
+#### Eliminación Lógica
 
 En lugar de borrar documentos, se actualiza el campo `active: false` en los modelos `User`, `Order` y `Product`, permitiendo conservar los datos y su historial.
 
-#### 🔸 Eliminación en Cascada
+#### Eliminación en Cascada
 
 Cuando se desactiva un usuario, también se desactivan sus productos y órdenes relacionados mediante un `pre-hook` en el modelo de usuario.
 
